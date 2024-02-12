@@ -1,3 +1,3 @@
-import Games from './Games';
+import restaurants from './Restaurants';
 
-export default Games;
+export default restaurants;
