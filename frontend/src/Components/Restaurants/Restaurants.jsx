@@ -2,46 +2,41 @@ import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import axios from 'axios';
 
-function AddGameForm({ setError, fetchGames, cancel, visible }) {
+function AddRestaurantForm({ setError, fetchRestaurants, cancel, visible }) {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState(0);
+  const [location, setLocation] = useState('');
 
   const changeName = (event) => { setName(event.target.value); };
-  const changeNumber = (event) => { setNumber(event.target.value); };
+  const changeLocation = (event) => { setLocation(event.target.value); };
 
-  const addGame = (event) => {
+  const addRestaurant = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8000/users', { name: name, numPlayers: number }) // sends a post request
+    axios.post('http://localhost:8000/restaurants', { name: name, location: location })
     .then(() => {
       setError('');
-      fetchGames();
+      fetchRestaurants();
     })
     .catch((error) => {
       setError(error.response.data.message);
     });
   };
 
-  return(
+  return (
     <form>
-        <label htmlFor="name"> 
-          Name
-        </label>
-        <input type="text" id="name" value={name} onChange={changeName}/>
-        <label htmlFor="name"> 
-          Number
-        </label>
-        <input type="number" id="number" value={number} onChange={changeNumber}/>
-        <button type="submit" onClick={addGame}>Submit</button>
-        <button type="button" onClick={cancel}>Cancel</button>
+      <label htmlFor="name">Name</label>
+      <input type="text" id="name" value={name} onChange={changeName}/>
+      <label htmlFor="location">Location</label>
+      <input type="text" id="location" value={location} onChange={changeLocation}/>
+      <button type="submit" onClick={addRestaurant}>Submit</button>
+      <button type="button" onClick={cancel}>Cancel</button>
     </form>
   );
 }
 
-
-AddGameForm.propTypes = {
+AddRestaurantForm.propTypes = {
   visible: propTypes.bool.isRequired,
   cancel: propTypes.func.isRequired,
-  fetchGames: propTypes.func.isRequired,
+  fetchRestaurants: propTypes.func.isRequired,
   setError: propTypes.func.isRequired,
 };
 
