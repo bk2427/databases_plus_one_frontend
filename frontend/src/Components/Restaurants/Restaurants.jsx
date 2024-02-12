@@ -40,48 +40,44 @@ AddRestaurantForm.propTypes = {
   setError: propTypes.func.isRequired,
 };
 
-function Games() {
+function Restaurants() {
   const [error, setError] = useState('');
-  const [games, setGames] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
 
-
-  const fetchGames = () => {
-    axios.get('http://localhost:8000/users')
+  const fetchRestaurants = () => {
+    axios.get('http://localhost:8000/restaurants')
     .then((response) => {
-      const gamesObject = response.data.Data;
-      const keys = Object.keys(gamesObject);
-      const gamesArray = keys.map((key) => gamesObject[key]);
-      setGames(gamesArray);
+      const restaurantsObject = response.data.Data;
+      const keys = Object.keys(restaurantsObject);
+      const restaurantsArray = keys.map((key) => restaurantsObject[key]);
+      setRestaurants(restaurantsArray);
       console.log(response);
-    }) // something good
-    .catch(() => { setError('Something went wrong'); }); //something bad
+    })
+    .catch(() => { setError('Something went wrong'); });
   };
 
-
-
   useEffect(
-    fetchGames,
+    fetchRestaurants,
     [],
   );
 
   return (
   <div className="wrapper">
-    <h1>
-      Games - but new
-    </h1>
+    <h1>Restaurants</h1>
     {error && (
       <div className="error-message">
       {error}
       </div>
     )}
-    <AddGameForm setError={setError}fetchGames={fetchGames}/>
-    {games.map((game) => (
-      <div className="game-container">
-        <h2>{game.user_name}</h2>
+    <AddRestaurantForm setError={setError} fetchRestaurants={fetchRestaurants}/>
+    {restaurants.map((restaurant) => (
+      <div className="restaurant-container">
+        <h2>{restaurant.name}</h2>
+        <p>{restaurant.location}</p>
       </div>
     ))}
   </div>
   );
 }
 
-export default Games;
+export default Restaurants;
