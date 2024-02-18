@@ -5,6 +5,7 @@ import Navbar from './Components/Navbar';
 //import Games from './Components/Games';
 import Users from './Components/Users';
 import Restaurants from './Components/Restaurants/Restaurants';
+import Hello from './Components/Hello/Hello';
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
     <Routes>
       <Route path ="" element={<h1>Home</h1>} />
       {/* <Route path="games" element={<Games />} /> */}
-      <Route path ="restaurants" element={<Restaurants/>} />
+      <Route path ="Restaurants" element={<Restaurants/>} />
+      <Route path ="Hello" element={<Hello/>} />
     </Routes>
     </BrowserRouter>
   );
