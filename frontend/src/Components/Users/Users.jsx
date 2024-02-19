@@ -38,3 +38,43 @@ AddUserForm.propTypes = {
   fetchUsers: propTypes.func.isRequired,
   setError: propTypes.func.isRequired,
 };
+
+function Users() {
+    const [error, setError] = useState('');
+    const [users, setUsers] = useState([]);
+  
+    const fetchUsers = () => {
+      axios.get('http://localhost:8000/users')
+      .then((response) => {
+        setUsers(response.data); 
+        console.log(response);
+      })
+      .catch(() => { setError('Something went wrong'); });
+    };
+  
+    useEffect(
+      fetchUsers(),
+      [],
+    );
+
+  
+    return (
+    <div className="wrapper">
+      <h1>Users</h1>
+      {error && (
+        <div className="error-message">
+        {error}
+        </div>
+      )}
+      <AddUserForm setError={setError} fetchUsers={fetchUsers} cancel={cancelAddUser}/>
+      {users.map((user, index) => (
+        <div key={index} className="user-container">
+          <h2>{user.name}</h2>
+          <p>{user.email}</p>
+        </div>
+      ))}
+    </div>
+    );
+  }
+  
+  export default Users;
