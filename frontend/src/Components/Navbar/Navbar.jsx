@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const PAGES = [
     { label: 'Home', destination: '/' },
-    { label: 'Games', destination: '/games' },
+    { label: 'Users', destination: '/Users' },
     { label: 'Restaurants', destination: '/Restaurants' },
     { label: 'hello', destination: '/Hello' },
 ];
