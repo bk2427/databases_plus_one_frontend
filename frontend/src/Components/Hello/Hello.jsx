@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import axios from 'axios';
@@ -5,41 +6,35 @@ import axios from 'axios';
 
 function Hello() {
   const [error, setError] = useState('');
-  const [Hello, setHello] = useState([]);
+ 
+
+  const [Hello, setHello] = useState("");
 
 
-  const fetchHello = () => {
-    axios
-      .get('hhttp://127.0.0.1:8000/endpoints')
-      .then((res) => {
-        console.log(res);
-        setHello(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  useEffect(
+    () => {
+      axios.get('http://127.0.0.1:8000/hello')
+        .then((response) => {
+          console.log(response);
+          setHello(response.data);
+        })
 
-  useEffect(fetchHello,[],);
+        .catch(() => {setError('something went wrong'); });
+    },
+    [],
+  );
 
-    return (
-        <div className="wrapper">
-        <h1>Endpoints</h1>
-        {error && (
-            <div className="error-message">
-            {error}
-            </div>
-        )}
-        {Hello.map((restaurant) => (
-            <div className="restaurant-container">
-            <h2>{restaurant.name}</h2>
-            <p>{restaurant.location}</p>
-            </div>
-        ))}
-        </div>
-    );
-};
-
-
+  return (
+  <div className="wrapper">
+    <h1>Hello World Response:</h1>
+      <p>hello, {Hello.hello}</p>
+    {error && (
+      <div className="error-message">
+      {error}
+      </div>
+    )}
+  </div>
+  );
+}
 
 export default Hello;
