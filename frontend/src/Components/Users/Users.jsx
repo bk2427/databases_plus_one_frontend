@@ -49,14 +49,16 @@ function Users() {
         setUsers(response.data); 
         console.log(response);
       })
-      .catch(() => { setError('Something went wrong'); });
+      .catch((error) => {
+        console.error(error);
+        setError(`Something went wrong: ${error.message}`);
+      });
     };
   
     useEffect(
-      fetchUsers(),
+      fetchUsers,
       [],
     );
-
   
     return (
     <div className="wrapper">

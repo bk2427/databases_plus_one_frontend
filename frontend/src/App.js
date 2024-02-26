@@ -3,7 +3,7 @@ import './App.css';
 
 import Navbar from './Components/Navbar';
 //import Games from './Components/Games';
-import Users from './Components/Users';
+import Users from './Components/Users/Users';
 import Restaurants from './Components/Restaurants/Restaurants';
 import Hello from './Components/Hello/Hello';
 
@@ -16,6 +16,7 @@ function App() {
       {/* <Route path="games" element={<Games />} /> */}
       <Route path ="Restaurants" element={<Restaurants/>} />
       <Route path ="Hello" element={<Hello/>} />
+      <Route path="Users" element={<Users/>} />
     </Routes>
     </BrowserRouter>
   );
