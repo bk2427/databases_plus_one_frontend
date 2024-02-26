@@ -66,7 +66,7 @@ function Users() {
         {error}
         </div>
       )}
-      <AddUserForm setError={setError} fetchUsers={fetchUsers} cancel={cancelAddUser}/>
+      <AddUserForm setError={setError} fetchUsers={fetchUsers}/>
       {users.map((user, index) => (
         <div key={index} className="user-container">
           <h2>{user.name}</h2>
