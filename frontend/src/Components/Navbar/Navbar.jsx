@@ -6,6 +6,7 @@ const PAGES = [
     { label: 'Users', destination: '/Users' },
     { label: 'Restaurants', destination: '/Restaurants' },
     { label: 'hello', destination: '/Hello' },
+    { label: 'User Menu', destination: '/MenuData' },
 ];
 
 function Navbar() {

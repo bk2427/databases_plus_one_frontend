@@ -6,6 +6,8 @@ import Navbar from './Components/Navbar';
 import Users from './Components/Users';
 import Restaurants from './Components/Restaurants/Restaurants';
 import Hello from './Components/Hello/Hello';
+import MenuData from './Components/MenuData';
+
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
       {/* <Route path="games" element={<Games />} /> */}
       <Route path ="Restaurants" element={<Restaurants/>} />
       <Route path ="Hello" element={<Hello/>} />
+      <Route path ="MenuData" element={<MenuData/>} />
+
     </Routes>
     </BrowserRouter>
   );
