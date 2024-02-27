@@ -49,14 +49,16 @@ function Users() {
         setUsers(response.data); 
         console.log(response);
       })
-      .catch(() => { setError('Something went wrong'); });
+      .catch((error) => {
+        console.error(error);
+        setError(`Something went wrong: ${error.message}`);
+      });
     };
   
     useEffect(
-      fetchUsers(),
+      fetchUsers,
       [],
     );
-
   
     return (
     <div className="wrapper">
@@ -66,7 +68,7 @@ function Users() {
         {error}
         </div>
       )}
-      <AddUserForm setError={setError} fetchUsers={fetchUsers} cancel={cancelAddUser}/>
+      <AddUserForm setError={setError} fetchUsers={fetchUsers}/>
       {users.map((user, index) => (
         <div key={index} className="user-container">
           <h2>{user.name}</h2>

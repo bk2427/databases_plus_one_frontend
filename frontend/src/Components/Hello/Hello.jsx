@@ -19,7 +19,10 @@ function Hello() {
           setHello(response.data);
         })
 
-        .catch(() => {setError('something went wrong'); });
+        .catch((error) => {
+          console.error(error);
+          setError(`Something went wrong: ${error.message}`);
+        });
     },
     [],
   );

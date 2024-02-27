@@ -53,7 +53,10 @@ function Restaurants() {
       setRestaurants(restaurantsArray);
       console.log(response);
     })
-    .catch(() => { setError('Something went wrong'); });
+    .catch((error) => {
+      console.error(error);
+      setError(`Something went wrong: ${error.message}`);
+    });
   };
 
   useEffect(
