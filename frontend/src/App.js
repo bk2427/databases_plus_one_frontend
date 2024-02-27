@@ -18,12 +18,9 @@ function App() {
       {/* <Route path="games" element={<Games />} /> */}
       <Route path ="Restaurants" element={<Restaurants/>} />
       <Route path ="Hello" element={<Hello/>} />
-<<<<<<< HEAD
       <Route path ="MenuData" element={<MenuData/>} />
-
-=======
       <Route path="Users" element={<Users/>} />
->>>>>>> 75469670b2dd5fa3cfac31d0d2b2e520ba65204b
+
     </Routes>
     </BrowserRouter>
   );
