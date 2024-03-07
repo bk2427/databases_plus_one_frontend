@@ -2,9 +2,14 @@ import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import axios from 'axios';
 
+import { BACKEND_URL } from '../../constants';
+
+const USERMENU_ENDPOINT = `${BACKEND_URL}/user_menu`;
+
+
 function MenuData() {
   const [menuData, setMenuData] = useState(null);
-  const apiUrl = 'http://127.0.0.1:8000/user_menu';
+  const apiUrl = USERMENU_ENDPOINT;
 
   useEffect(() => {
     // Fetch menu data when the component mounts

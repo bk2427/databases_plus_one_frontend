@@ -3,6 +3,10 @@ import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import axios from 'axios';
 
+import { BACKEND_URL } from '../../constants';
+
+const HELLO_ENDPOINT = `${BACKEND_URL}/hello`;
+
 
 function Hello() {
   const [error, setError] = useState('');
@@ -13,7 +17,7 @@ function Hello() {
 
   useEffect(
     () => {
-      axios.get('http://127.0.0.1:8000/hello')
+      axios.get(HELLO_ENDPOINT)
         .then((response) => {
           console.log(response);
           setHello(response.data);
