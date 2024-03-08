@@ -8,41 +8,44 @@ const USERMENU_ENDPOINT = `${BACKEND_URL}/user_menu`;
 
 
 function MenuData() {
-  const [menuData, setMenuData] = useState(null);
-  const apiUrl = USERMENU_ENDPOINT;
+    const [error, setError] = useState('');
+    const [menuItems, setMenuItems] = useState([]);
 
-  useEffect(() => {
-    // Fetch menu data when the component mounts
-    axios.get(apiUrl)
-      .then(response => {
-        setMenuData(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching menu data:', error);
-      });
-  }, []); // Empty dependency array means this effect runs only once, similar to componentDidMount
+    const fetchUserMenu = () => {
+        axios.get(USERMENU_ENDPOINT)
+        .then((response) => {
+            const menuChoices = response.data.Choices; //pulling from choices array
+            const keys = Object.keys(menuChoices); //gets keys for each from array
+            const menuItemsArray = keys.map((key) => menuChoices[key]); //maps
+			setMenuItems(menuItemsArray); //sets into array
 
-  return (
-    <div>
-      <h1>User Menu</h1>
-      {menuData ? (
-        <div>
-          <p><strong>Title:</strong> {menuData.Title}</p>
-          <p><strong>Default:</strong> {menuData.Default}</p>
-          <p><strong>Choices:</strong></p>
-          <ul>
-            {Object.keys(menuData.Choices).map(key => (
-              <li key={key}>
-                {menuData.Choices[key].text} {/* Displaying the text for each choice */}
-              </li>
+        })
+        .catch((e) => {
+            setError('There was a problem fetching the user menu.');
+        });
+    };
+
+    useEffect(() => {
+        fetchUserMenu();
+    }, []);
+
+    return (
+        <div className="wrapper">
+            <h1>User Menu</h1>
+            
+            {error && (
+                <div className="error-message">
+                    {error}
+                </div>
+            )}
+            <div><h2>Options:</h2></div>
+            {menuItems.map((menuItem) => (
+                <div key={menuItem.text} className="user-container">
+                    <p>{menuItem.text}</p>
+                </div>
             ))}
-          </ul>
         </div>
-      ) : (
-        <p>Loading...</p>
-      )}
-    </div>
-  );
+    );
 }
 
 export default MenuData;
