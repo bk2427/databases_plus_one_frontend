@@ -127,7 +127,7 @@ function Users() {
         <div className="error-message">{error}</div>
       )}
 
-      <AddUserForm setError={setError} fetchUsers={fetchUsers} />
+      {/* <AddUserForm setError={setError} fetchUsers={fetchUsers} /> */}
 
       {users.map((user, index) => (
         <div key={index} className="user-container" onClick={() => handleUserClick(user)}> {/* Attach click handler to each user */}

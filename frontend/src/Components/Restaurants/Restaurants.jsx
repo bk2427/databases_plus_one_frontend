@@ -33,14 +33,16 @@ function AddRestaurantForm({ setError, fetchRestaurants, cancel }) {
       state: state,
       zip_code: zipCode
     })
-    .then((response) => {
-      const newRestaurantId = response.data.ID; // Assuming the API response contains the restaurant ID
-      setAddedRestaurantId(newRestaurantId); // Set the ID of the added restaurant
+    .then(() => {
       setError('');
       fetchRestaurants();
     })
     .catch((error) => {
-      setError(error.response.data.message);
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+          setError('There was a problem adding a user');
+      }
     });
   };
 
@@ -65,7 +67,7 @@ function AddRestaurantForm({ setError, fetchRestaurants, cancel }) {
       <button type="submit" onClick={addRestaurant}>Submit</button>
       <button type="button" onClick={cancel}>Cancel</button>
     </form>
-    <p>Successfully Added. Newest ID:{addedRestaurantId}</p></div> ///prints added id
+    <p>Successfully:{addedRestaurantId}</p></div> ///prints added id
   );
 }
 
@@ -84,8 +86,6 @@ function Restaurants() {
   const fetchRestaurants = () => {
     axios.get('http://localhost:8000/restaurants')
     .then((response) => {
-      const userId = response.data.ID; // Assuming the user ID is returned as '_id'
-      console.log('User ID:', userId);
       const restaurantsObject = response.data.DATA;
       const restaurantsArray = Object.values(restaurantsObject);
       setRestaurants(restaurantsArray);

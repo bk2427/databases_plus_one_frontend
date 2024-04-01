@@ -52,6 +52,14 @@ button:hover {
   border-radius: 5px;
 }
 
+.success-message {
+  border: 2px solid var(--buff);
+  padding: 1em;
+  margin: 1em 0;
+  border-radius: 5px;
+  border-color: rgb(0, 204, 44);
+}
+
 form input {
   display: block;
   margin: .5rem 0 1rem 0;
