@@ -84,6 +84,8 @@ function Restaurants() {
   const fetchRestaurants = () => {
     axios.get('http://localhost:8000/restaurants')
     .then((response) => {
+      const userId = response.data.ID; // Assuming the user ID is returned as '_id'
+      console.log('User ID:', userId);
       const restaurantsObject = response.data.DATA;
       const restaurantsArray = Object.values(restaurantsObject);
       setRestaurants(restaurantsArray);
