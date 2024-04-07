@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import UpdateUserForm from './UpdateUserForm'; // Import the component for the popup form
 
+
 import { BACKEND_URL } from '../../constants';
 
 const USERS_ENDPOINT = `${BACKEND_URL}/users`;
@@ -28,8 +29,7 @@ function AddUserForm({ setError, fetchUsers }) {
 		event.preventDefault();
 		axios.post(USERS_ENDPOINT, { "first name": first_name, "last name": last_name, email: email, password: password }) // actual attribute name: this file's var/val
 			.then((response) => {
-        const newUserId = response.data.id; // Assuming the API response contains the user ID
-        setUserIds([...userIds, newUserId]); // Store the new user ID in the state variable
+
 				setError('');
 				fetchUsers();
 			})
@@ -72,8 +72,7 @@ function AddUserForm({ setError, fetchUsers }) {
 function Users() {
   const [error, setError] = useState('');
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null); // State to manage selected user for update
-  const [showPopup, setShowPopup] = useState(false); // State to manage visibility of popup form
+
 
   const fetchUsers = () => {
     axios.get(USERS_ENDPOINT)
@@ -96,54 +95,26 @@ function Users() {
     fetchUsers();
   }, []);
 
-  // Function to handle when a user's information is clicked
-  const handleUserClick = (user) => {
-    setSelectedUser(user);
-    setShowPopup(true);
-  };
 
-  // Function to handle updating the user's information
-  const updateUser = (newEmail) => {
-    axios.put(`${USERS_ENDPOINT}/${selectedUser._id}/${newEmail}`)
-      .then(() => {
-        setError('');
-        fetchUsers();
-        setShowPopup(false); // Hide the popup after successful update
-      })
-      .catch((error) => {
-        if (error.response && error.response.data && error.response.data.message) {
-          setError(error.response.data.message);
-        } else {
-          setError('There was a problem updating the user.');
-        }
-      });
-  };
+
+
 
   return (
-    <div className="wrapper">
+    <div className="center">
       <h1>Users</h1>
 
       {error && (
         <div className="error-message">{error}</div>
       )}
 
-      {/* <AddUserForm setError={setError} fetchUsers={fetchUsers} /> */}
-
       {users.map((user, index) => (
-        <div key={index} className="user-container" onClick={() => handleUserClick(user)}> {/* Attach click handler to each user */}
+        <div key={index} className="user-container"> {/* Attach click handler to each user */}
           <h2>Email: {user.email}</h2>
           <p>First Name: {user['first name']}</p>
           <p>Last Name: {user['last name']}</p>
           <p>Password: {user.password}</p>
         </div>
       ))}
-
-      {/* Render the popup form if showPopup state is true */}
-      {showPopup && selectedUser && (
-        <div className="popup">
-          <UpdateUserForm user={selectedUser} updateUser={updateUser} />
-        </div>
-      )}
     </div>
   );
 }

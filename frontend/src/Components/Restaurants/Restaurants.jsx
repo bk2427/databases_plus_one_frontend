@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import './Restaurants.css';
 
 
 
@@ -14,6 +16,8 @@ function AddRestaurantForm({ setError, fetchRestaurants, cancel }) {
   const [zipCode, setZipCode] = useState('');
   const [addedRestaurantId, setAddedRestaurantId] = useState(null); // State variable to store the ID of the added restaurant
 
+
+
   const changeName = (event) => { setName(event.target.value); };
   const changeDescription = (event) => { setDescription(event.target.value); };
   const changeType = (event) => { setType(event.target.value); };
@@ -21,6 +25,10 @@ function AddRestaurantForm({ setError, fetchRestaurants, cancel }) {
   const changeCity = (event) => { setCity(event.target.value); };
   const changeState = (event) => { setState(event.target.value); };
   const changeZipCode = (event) => { setZipCode(event.target.value); };
+
+  const clearError = () => {
+    setError('');
+  };
 
   const addRestaurant = (event) => {
     event.preventDefault();
@@ -48,26 +56,43 @@ function AddRestaurantForm({ setError, fetchRestaurants, cancel }) {
 
 
   return (
-    <div>
-    <form>
-      <label htmlFor="name">Name</label>
-      <input type="text" id="name" value={name} onChange={changeName}/>
-      <label htmlFor="type">type</label>
-      <input type="text" id="type" value={type} onChange={changeType}/>
-      <label htmlFor="description">Description</label>
-      <input type="text" id="description" value={description} onChange={changeDescription}/>
-      <label htmlFor="address">Address</label>
-      <input type="text" id="address" value={address} onChange={changeAddress}/>
-      <label htmlFor="city">City</label>
-      <input type="text" id="city" value={city} onChange={changeCity}/>
-      <label htmlFor="state">State</label>
-      <input type="text" id="state" value={state} onChange={changeState}/>
-      <label htmlFor="zipCode">Zip Code</label>
-      <input type="text" id="zipCode" value={zipCode} onChange={changeZipCode}/>
-      <button type="submit" onClick={addRestaurant}>Submit</button>
-      <button type="button" onClick={cancel}>Cancel</button>
-    </form>
-    <p>Successfully:{addedRestaurantId}</p></div> ///prints added id
+    <div className="form-container">
+      <form>
+        <div>
+          <label htmlFor="name">Name</label>
+          <input type="text" id="name" value={name} onChange={changeName}/>
+        </div>
+        <div>
+          <label htmlFor="type">Type</label>
+          <input type="text" id="type" value={type} onChange={changeType}/>
+        </div>
+        <div>
+          <label htmlFor="description">Description</label>
+          <input type="text" id="description" value={description} onChange={changeDescription}/>
+        </div>
+        <div>
+          <label htmlFor="address">Address</label>
+          <input type="text" id="address" value={address} onChange={changeAddress}/>
+        </div>
+        <div>
+          <label htmlFor="city">City</label>
+          <input type="text" id="city" value={city} onChange={changeCity}/>
+        </div>
+        <div>
+          <label htmlFor="state">State</label>
+          <input type="text" id="state" value={state} onChange={changeState}/>
+        </div>
+        <div>
+          <label htmlFor="zipCode">Zip Code</label>
+          <input type="text" id="zipCode" value={zipCode} onChange={changeZipCode}/>
+        </div>
+        <div>
+          <button type="submit" onClick={addRestaurant}>Submit</button>
+          <button type="button" onClick={() => {cancel();clearError();}}>Cancel</button>
+        </div>
+      </form>
+    </div>
+
   );
 }
 
@@ -82,6 +107,12 @@ AddRestaurantForm.propTypes = {
 function Restaurants() {
   const [error, setError] = useState('');
   const [restaurants, setRestaurants] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+
+  const toggleForm = () => {
+    setShowForm(!showForm);
+  };
 
   const fetchRestaurants = () => {
     axios.get('http://localhost:8000/restaurants')
@@ -101,6 +132,10 @@ function Restaurants() {
     [],
   );
 
+  const handleRowClick = (restaurant) => {
+    setSelectedRestaurant(restaurant);
+  };
+
   return (
     <div className="wrapper">
       <h1>Restaurants</h1>
@@ -109,15 +144,45 @@ function Restaurants() {
           {error}
         </div>
       )}
-      <AddRestaurantForm setError={setError} fetchRestaurants={fetchRestaurants} />
-      {restaurants.map((restaurant, index) => (
-        <div className="restaurant-container" key={index}>
-          <h2>{restaurant.name}</h2>
-          <p>{restaurant.description}</p>
-          <p>{restaurant.address}</p>
-          <p>{restaurant.city}, {restaurant.state} {restaurant.zip_code}</p>
-        </div>
-      ))}
+      <button onClick={toggleForm}>{showForm ? 'Hide Form' : 'Add Restaurant'}</button>
+      {showForm && (
+        <AddRestaurantForm setError={setError} fetchRestaurants={fetchRestaurants} cancel={toggleForm} />
+      )}
+      <div className="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Address</th>
+              <th>City</th>
+              <th>State</th>
+              <th>Zip Code</th>
+            </tr>
+          </thead>
+          <tbody>
+            {restaurants.map((restaurant, index) => (
+              <tr key={index} onClick={() => handleRowClick(restaurant)}>
+                <td>{restaurant.name}</td>
+                <td>{restaurant.description}</td>
+                <td>{restaurant.address}</td>
+                <td>{restaurant.city}</td>
+                <td>{restaurant.state}</td>
+                <td>{restaurant.zip_code}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {selectedRestaurant && (
+          <div className="selected-restaurant-details">
+            <h2>{selectedRestaurant.name}</h2>
+            <p>Description: {selectedRestaurant.description}</p>
+            <p>Address: {selectedRestaurant.address}, {selectedRestaurant.city}, {selectedRestaurant.state} {selectedRestaurant.zip_code}</p>
+            <Link to={`/RestInfoPage?name=${encodeURIComponent(selectedRestaurant.name)}`}>View Details</Link>
+
+          </div>
+        )}
+      </div>
     </div>
   );
 }

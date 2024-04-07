@@ -1,24 +1,38 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import '../../App.css';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-import Navbar from '../Navbar';
-import Users from '../Users/Users';
-import Restaurants from '../Restaurants/Restaurants';
-import MenuData from '../MenuData';
+const Home = ({ userId }) => {
+  const [reviews, setReviews] = useState([]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/reviews');
+        const allReviews = response.data.DATA;
+        const reviewsArray = Object.values(allReviews);
+        const filteredReviews = reviewsArray.filter(review => review.USER_ID === userId);
+        setReviews(filteredReviews);
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+      }
+    };
 
-function Home() {
+    fetchData();
+  }, [userId]);
+
   return (
-    <>
-      <Routes>
-        <Route path="" element={<h1>Home</h1>} />
-        <Route path="Restaurants" element={<Restaurants />} />
-        <Route path="MenuData" element={<MenuData />} />
-        <Route path="Users" element={<Users />} />
-      </Routes>
-    </>
+    <div>
+      <h1>My Reviews:</h1>
+      <ul>
+        {reviews.map((review, index) => (
+          <li key={index}>
+            <h3>{review.Review}</h3>
+            <p>Rating: {review.rating}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
-}
+};
 
 export default Home;

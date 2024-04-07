@@ -17,7 +17,7 @@ function Login({ onLogin }) {
         if (userData.DATA[email].password === password) {
           // Successful login
           setMessage('');
-          onLogin(); // Call onLogin function
+          onLogin(354);
         } else {
           setMessage('Wrong password');
         }

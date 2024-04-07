@@ -9,13 +9,17 @@ import Users from './Components/Users/Users';
 import Restaurants from './Components/Restaurants/Restaurants';
 import MenuData from './Components/MenuData';
 import CreateAccount from './Components/CreateAccount';
+import RestInfoPage from './Components/RestInfoPage/RestInfoPage';
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
 
-  const handleLogin = () => {
+  const handleLogin = (id) => {
     // Perform your login logic, and if successful, set isLoggedIn to true
     setIsLoggedIn(true);
+    setUserId(id);
   };
 
   return (
@@ -26,10 +30,11 @@ function App() {
         <Route path="/create-account" element={<CreateAccount />} />
         {isLoggedIn && (
           <>
-            <Route path="/Home/*" element={<Home />} />
+            <Route path="/Home" element={<Home userId={userId} />} />
             <Route path="Restaurants" element={<Restaurants />} />
             <Route path="MenuData" element={<MenuData />} />
             <Route path="Users" element={<Users />} />
+            <Route path="restInfoPage" element={<RestInfoPage />} />
           </>
         )}
       </Routes>
