@@ -3,6 +3,11 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+//import { Link, useHistory } from 'react-router-dom';
+//import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+
+
 import UpdateUserForm from './UpdateUserForm'; // Import the component for the popup form
 
 
@@ -72,6 +77,11 @@ function AddUserForm({ setError, fetchUsers }) {
 function Users() {
   const [error, setError] = useState('');
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
+
+  const handleUserClick = (email) => {
+    navigate('/SelectUser?email=' + encodeURIComponent(email));
+  };
 
 
   const fetchUsers = () => {
@@ -107,14 +117,26 @@ function Users() {
         <div className="error-message">{error}</div>
       )}
 
-      {users.map((user, index) => (
-        <div key={index} className="user-container"> {/* Attach click handler to each user */}
-          <h2>Email: {user.email}</h2>
-          <p>First Name: {user['first name']}</p>
-          <p>Last Name: {user['last name']}</p>
-          <p>Password: {user.password}</p>
-        </div>
-      ))}
+      <table>
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Password</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user, index) => (
+            <tr key={index} className="user-row" onClick={() => handleUserClick(user.email)}>
+              <td>{user.email}</td>
+              <td>{user['first name']}</td>
+              <td>{user['last name']}</td>
+              <td>{user.password}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

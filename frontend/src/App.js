@@ -10,6 +10,7 @@ import Restaurants from './Components/Restaurants/Restaurants';
 import MenuData from './Components/MenuData';
 import CreateAccount from './Components/CreateAccount';
 import RestInfoPage from './Components/RestInfoPage/RestInfoPage';
+import SelectUser from './Components/SelectUser/SelectUser';
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
             <Route path="MenuData" element={<MenuData />} />
             <Route path="Users" element={<Users />} />
             <Route path="restInfoPage" element={<RestInfoPage />} />
+            <Route path="SelectUser" element={<SelectUser />} />
           </>
         )}
       </Routes>
