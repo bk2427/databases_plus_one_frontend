@@ -3,12 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-//import { Link, useHistory } from 'react-router-dom';
-//import { useHistory } from 'react-router';
 import { useNavigate } from 'react-router-dom';
-
-
-import UpdateUserForm from './UpdateUserForm'; // Import the component for the popup form
 
 
 import { BACKEND_URL } from '../../constants';
