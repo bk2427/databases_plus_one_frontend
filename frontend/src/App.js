@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import "./App.css";
 
-import Navbar from './Components/Navbar';
-import Login from './Components/LoginPage';
-import Home from './Components/Home';
-import Users from './Components/Users/Users';
-import Restaurants from './Components/Restaurants/Restaurants';
-import MenuData from './Components/MenuData';
-import CreateAccount from './Components/CreateAccount';
-import RestInfoPage from './Components/RestInfoPage/RestInfoPage';
-import SelectUser from './Components/SelectUser/SelectUser';
-
+import Navbar from "./Components/Navbar";
+import Login from "./Components/LoginPage";
+import Home from "./Components/Home";
+import Users from "./Components/Users/Users";
+import Restaurants from "./Components/Restaurants/Restaurants";
+import MenuData from "./Components/MenuData";
+import CreateAccount from "./Components/CreateAccount";
+import RestInfoPage from "./Components/RestInfoPage/RestInfoPage";
+import SelectUser from "./Components/SelectUser/SelectUser";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -27,7 +26,16 @@ function App() {
     <BrowserRouter>
       {isLoggedIn && <Navbar />}
       <Routes>
-        <Route path="/" element={isLoggedIn ? <Navigate to="/Home" /> : <Login onLogin={handleLogin} />} />
+        <Route
+          path="/"
+          element={
+            isLoggedIn ? (
+              <Navigate to="/Home" />
+            ) : (
+              <Login onLogin={handleLogin} />
+            )
+          }
+        />
         <Route path="/create-account" element={<CreateAccount />} />
         {isLoggedIn && (
           <>
@@ -45,6 +53,3 @@ function App() {
 }
 
 export default App;
-
-
-
