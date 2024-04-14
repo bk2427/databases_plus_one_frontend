@@ -178,7 +178,7 @@ function Restaurants() {
             <h2>{selectedRestaurant.name}</h2>
             <p>Description: {selectedRestaurant.description}</p>
             <p>Address: {selectedRestaurant.address}, {selectedRestaurant.city}, {selectedRestaurant.state} {selectedRestaurant.zip_code}</p>
-            <Link to={`/RestInfoPage?name=${encodeURIComponent(selectedRestaurant.name)}`}>View Details</Link>
+            <Link to={`/RestInfoPage?ID=${encodeURIComponent(selectedRestaurant._id)}`}>View Details</Link>
 
           </div>
         )}

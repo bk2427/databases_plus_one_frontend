@@ -1,18 +1,47 @@
+
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 function SelectUser() {
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const userEmail = searchParams.get('email');
-  
-    return (
-      <div>
-        <h2>User Email: {userEmail}</h2>
-        {/* Display other details using userEmail */}
-      </div>
-    );
-  }
-  
-  export default SelectUser;
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const ID = searchParams.get('ID');
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/users');
+        const usersData = response.data.DATA;
+        const user = Object.values(usersData).find(user => user._id === ID);
+        setUserData(user);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    if (ID) {
+      fetchUserData();
+    }
+  }, [ID]);
+
+  return (
+    <div>
+      {userData ? (
+        <div>
+          <h2>User Data</h2>
+          <p>Email: {userData.email}</p>
+          <p>First Name: {userData['first name']}</p>
+          <p>Last Name: {userData['last name']}</p>
+          <p>Password: {userData.password}</p>
+          {/* Add additional fields as needed */}
+        </div>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
+  );
+}
+
+export default SelectUser;

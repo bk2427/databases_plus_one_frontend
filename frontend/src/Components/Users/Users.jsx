@@ -15,7 +15,6 @@ function AddUserForm({ setError, fetchUsers }) {
 	const [last_name, setLastName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-  const [userIds, setUserIds] = useState([]);
 
 
 	const changeFirstName = (event) => { setFirstName(event.target.value); };
@@ -74,8 +73,8 @@ function Users() {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
 
-  const handleUserClick = (email) => {
-    navigate('/SelectUser?email=' + encodeURIComponent(email));
+  const handleUserClick = (_id) => {
+    navigate('/SelectUser?ID=' + encodeURIComponent(_id));
   };
 
 
@@ -123,7 +122,7 @@ function Users() {
         </thead>
         <tbody>
           {users.map((user, index) => (
-            <tr key={index} className="user-row" onClick={() => handleUserClick(user.email)}>
+            <tr key={index} className="user-row" onClick={() => handleUserClick(user._id)}>
               <td>{user.email}</td>
               <td>{user['first name']}</td>
               <td>{user['last name']}</td>
