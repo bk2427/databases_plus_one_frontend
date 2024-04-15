@@ -7,6 +7,10 @@ function RestInfoPage() {
   const searchParams = new URLSearchParams(location.search);
   const ID = searchParams.get('ID');
   const [RestData, setRestData] = useState(null);
+  const [review, setReview] = useState('');
+  const [rating, setRating] = useState(0);
+  const [showForm, setShowForm] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   useEffect(() => {
     const fetchRestData = async () => {
@@ -25,13 +29,71 @@ function RestInfoPage() {
     }
   }, [ID]);
 
+  const handleSubmitReview = async (event) => {
+    event.preventDefault();
+    try {
+      await axios.post('http://127.0.0.1:8000/reviews', {
+        USER_ID: 0, // You may replace this with actual USER_ID logic
+        RESTAURANT_ID: ID,
+        Review: review,
+        rating: rating
+      });
+      // Clear form fields after successful submission
+      setReview('');
+      setRating(0);
+      setShowForm(false);
+      setShowSuccessMessage(true);
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 5000); // Hide success message after 5 seconds
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      alert('Failed to submit review. Please try again later.');
+    }
+  };
+
   return (
     <div>
       {RestData ? (
         <div>
-          <h2>User Data</h2>
-          <p>Password: {RestData.name}</p>
+          <h2>Restaurant Info</h2>
+          <p>Name: {RestData.name}</p>
+          <p>Address: {RestData.address}</p>
           {/* Add additional fields as needed */}
+          <button onClick={() => setShowForm(true)}>Add Review</button>
+          {showForm && (
+            <div>
+              <h2>Add Review</h2>
+              <form onSubmit={handleSubmitReview}>
+                <div>
+                  <label htmlFor="review">Review:</label>
+                  <input
+                    type="text"
+                    id="review"
+                    value={review}
+                    onChange={(event) => setReview(event.target.value)}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="rating">Rating:</label>
+                  <select
+                    id="rating"
+                    value={rating}
+                    onChange={(event) => setRating(parseInt(event.target.value))}
+                  >
+                    <option value="0">Select Rating</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                </div>
+                <button type="submit">Submit Review</button>
+              </form>
+            </div>
+          )}
+          {showSuccessMessage && <p>Review submitted successfully!</p>}
         </div>
       ) : (
         <p>Loading...</p>

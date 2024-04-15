@@ -99,10 +99,6 @@ function Users() {
     fetchUsers();
   }, []);
 
-
-
-
-
   return (
     <div className="center">
       <h1>Users</h1>

@@ -3,6 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
+
+
+
+
+
+
 function SelectUser() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -30,11 +36,8 @@ function SelectUser() {
     <div>
       {userData ? (
         <div>
-          <h2>User Data</h2>
+          <h2>User: {userData['first name']} {userData['last name']} </h2>
           <p>Email: {userData.email}</p>
-          <p>First Name: {userData['first name']}</p>
-          <p>Last Name: {userData['last name']}</p>
-          <p>Password: {userData.password}</p>
           {/* Add additional fields as needed */}
         </div>
       ) : (

@@ -17,7 +17,6 @@ function App() {
   const [userId, setUserId] = useState(null);
 
   const handleLogin = (id) => {
-    // Perform your login logic, and if successful, set isLoggedIn to true
     setIsLoggedIn(true);
     setUserId(id);
   };
