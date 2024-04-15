@@ -1,30 +1,25 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const PAGES = [
-    { label: 'Home', destination: '/' },
-    { label: 'Users', destination: '/Users' },
-    { label: 'Restaurants', destination: '/Restaurants' },
-    { label: 'User Menu', destination: '/MenuData' },
+  { label: "Home", destination: "/" },
+  { label: "Users", destination: "/Users" },
+  { label: "Restaurants", destination: "/Restaurants" },
+  { label: "User Menu", destination: "/MenuData" },
 ];
 
 function Navbar() {
+  const mapper = (page) => (
+    <li>
+      <Link to={page.destination}>{page.label}</Link>
+    </li>
+  );
 
-    const mapper = (page) => (
-        <li>
-            <Link to={page.destination}>
-                {page.label}
-            </Link>
-        </li>
-    );
-
-    return (
-        <nav>
-            <ul>
-                {PAGES.map(mapper)}
-            </ul>
-        </nav>
-    );
+  return (
+    <nav>
+      <ul>{PAGES.map(mapper)}</ul>
+    </nav>
+  );
 }
 
 export default Navbar;
