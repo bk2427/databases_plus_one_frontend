@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { useUserId } from '../../App';
 
 function RestInfoPage() {
+  const userId = useUserId();//sets user ID
+
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const ID = searchParams.get('ID');
@@ -33,7 +36,7 @@ function RestInfoPage() {
     event.preventDefault();
     try {
       await axios.post('http://127.0.0.1:8000/reviews', {
-        USER_ID: 0, // You may replace this with actual USER_ID logic
+        USER_ID: userId,
         RESTAURANT_ID: ID,
         Review: review,
         rating: rating

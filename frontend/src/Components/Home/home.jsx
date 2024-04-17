@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useUserId } from '../../App';
 
-const Home = ({ userId }) => {
+
+
+
+
+const Home = () => {
+  const userId = useUserId();
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, createContext, useContext } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 
@@ -12,6 +12,9 @@ import CreateAccount from "./Components/CreateAccount";
 import RestInfoPage from "./Components/RestInfoPage/RestInfoPage";
 import SelectUser from "./Components/SelectUser/SelectUser";
 
+// Step 1: Create a context
+const UserIdContext = createContext();
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
@@ -22,33 +25,41 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
-      {isLoggedIn && <Navbar />}
-      <Routes>
-        <Route
-          path="/"
-          element={
-            isLoggedIn ? (
-              <Navigate to="/Home" />
-            ) : (
-              <Login onLogin={handleLogin} />
-            )
-          }
-        />
-        <Route path="/create-account" element={<CreateAccount />} />
-        {isLoggedIn && (
-          <>
-            <Route path="/Home" element={<Home userId={userId} />} />
-            <Route path="Restaurants" element={<Restaurants />} />
-            <Route path="MenuData" element={<MenuData />} />
-            <Route path="Users" element={<Users />} />
-            <Route path="restInfoPage" element={<RestInfoPage />} />
-            <Route path="SelectUser" element={<SelectUser />} />
-          </>
-        )}
-      </Routes>
-    </BrowserRouter>
+    // Step 2: Provide the context value
+    <UserIdContext.Provider value={userId}>
+      <BrowserRouter>
+        {isLoggedIn && <Navbar />}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              isLoggedIn ? (
+                <Navigate to="/Home" />
+              ) : (
+                <Login onLogin={handleLogin} />
+              )
+            }
+          />
+          <Route path="/create-account" element={<CreateAccount />} />
+          {isLoggedIn && (
+            <>
+              <Route path="/Home" element={<Home />} />
+              <Route path="/Restaurants" element={<Restaurants />} />
+              <Route path="/MenuData" element={<MenuData />} />
+              <Route path="/Users" element={<Users />} />
+              <Route path="/restInfoPage" element={<RestInfoPage />} />
+              <Route path="/SelectUser" element={<SelectUser />} />
+            </>
+          )}
+        </Routes>
+      </BrowserRouter>
+    </UserIdContext.Provider>
   );
+}
+
+// Step 3: Create a custom hook to consume the context
+export function useUserId() {
+  return useContext(UserIdContext);
 }
 
 export default App;
