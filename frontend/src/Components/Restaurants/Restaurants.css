@@ -70,3 +70,13 @@
     background-color: #da190b;
   }
   
+  form select {
+    display: block;
+    margin: .5rem 0 1rem 0;
+    border-radius: 5px;
+    font-size: 1rem;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    padding-left: 70px;
+  }

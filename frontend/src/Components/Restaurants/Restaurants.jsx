@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './Restaurants.css';
 
-
+const restaurantTypes = ["Bar", "Bakery", "Fast Food", "Restaurant"];
 
 function AddRestaurantForm({ setError, fetchRestaurants, cancel }) {
   const [name, setName] = useState('');
@@ -64,7 +64,12 @@ function AddRestaurantForm({ setError, fetchRestaurants, cancel }) {
         </div>
         <div>
           <label htmlFor="type">Type</label>
-          <input type="text" id="type" value={type} onChange={changeType}/>
+          <select id="type" value={type} onChange={changeType}>
+            <option value="">Select a type</option>
+            {restaurantTypes.map((type, index) => (
+              <option key={index} value={type}>{type}</option>
+            ))}
+          </select>
         </div>
         <div>
           <label htmlFor="description">Description</label>
