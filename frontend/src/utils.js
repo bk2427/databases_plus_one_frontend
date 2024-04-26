@@ -26,17 +26,12 @@ const getReviewsByUserId = async (userId) => {
 };
 
 
-const updateReview = async (reviewId, userId, restaurantId, newReview, newRating) => {
+const updateReview = async (userId, restaurantId, review, rating) => {
   try {
-    const response = await axios.put(`http://localhost:8000/reviews/${reviewId}`, {
-      USER_ID: userId,
-      RESTAURANT_ID: restaurantId,
-      Review: newReview,
-      rating: newRating
-    });
-    return response.data; // Return the response data if needed
+    const response = await axios.put(`http://localhost:8000/reviews/${userId}/${restaurantId}/${encodeURIComponent(review)}/${rating}`);
+    return response.data; // Return the updated review data
   } catch (error) {
-    throw new Error('Error updating review: ' + error.message);
+    throw error; // Throw error if update fails
   }
 };
 
