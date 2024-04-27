@@ -150,6 +150,89 @@ AddRestaurantForm.propTypes = {
   setError: propTypes.func.isRequired,
 };
 
+// function FilterByTypeForm({ setError, setFilteredRestaurants }) {
+//   const [selectedType, setSelectedType] = useState("");
+//   const [restaurants, setRestaurants] = useState([]);
+
+//   const fetchRestaurants = () => {
+//     axios
+//       .get("http://localhost:8000/restaurants")
+//       .then((response) => {
+//         const restaurantsObject = response.data.DATA;
+//         const restaurantsArray = Object.values(restaurantsObject);
+//         setRestaurants(restaurantsArray);
+//       })
+//       .catch((error) => {
+//         console.error(error);
+//         setError(`Something went wrong: ${error.message}`);
+//       });
+//   };
+
+//   useEffect(fetchRestaurants, []);
+
+//   const handleTypeChange = (event) => {
+//     setSelectedType(event.target.value);
+//   };
+
+//   const handleFilterByType = () => {
+//     if (selectedType && restaurants && restaurants.length > 0) {
+//       const filtered = restaurants.filter(
+//         (restaurant) => restaurant.restaurant_type === selectedType
+//       );
+//       setFilteredRestaurants(filtered);
+//     }
+//   };
+
+//   return (
+//     <div className="form-container">
+//       <h2>Filter</h2>
+//       <select value={selectedType} onChange={handleTypeChange}>
+//         <option value="">Select a type</option>
+//         {restaurantTypes.map((type, index) => (
+//           <option key={index} value={type}>
+//             {type}
+//           </option>
+//         ))}
+//       </select>
+//       <button onClick={handleFilterByType}>Filter</button>
+//       {/* Display filtered restaurants */}
+//       <div>
+//         <h2>Restaurants:</h2>
+//         {restaurants.length > 0 ? (
+//           <table>
+//             <thead>
+//               <tr>
+//                 <th>Name</th>
+//                 <th>Type</th>
+//                 <th>Description</th>
+//                 <th>Location</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {restaurants.map((restaurant, index) => (
+//                 <tr key={index}>
+//                   <td>{restaurant.name}</td>
+//                   <td>{restaurant.restaurant_type}</td>
+//                   <td>{restaurant.description}</td>
+//                   <td>
+//                     {restaurant.city}, {restaurant.state}
+//                   </td>
+//                 </tr>
+//               ))}
+//             </tbody>
+//           </table>
+//         ) : (
+//           <p>No restaurants found for the selected type.</p>
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
+
+// FilterByTypeForm.propTypes = {
+//   setFilteredRestaurants: propTypes.func.isRequired,
+// };
+
 function Restaurants() {
   const [error, setError] = useState("");
   const [restaurants, setRestaurants] = useState([]);
