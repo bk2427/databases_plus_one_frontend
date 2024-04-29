@@ -58,5 +58,26 @@ async function getUserById(userId) {
   }
 }
 
+const doesReviewExist = async (userId, restaurantId) => {
+  try {
+    // Fetch the review data from the API
+    const response = await axios.get('http://127.0.0.1:8000/reviews');
+    const reviewsData = response.data.DATA;
 
-export { getRestaurantById, getReviewsByUserId, updateReview, getUserById };
+    // Iterate over each review in the reviews data
+    for (const reviewKey in reviewsData) {
+      const review = reviewsData[reviewKey];
+      // Check if the review has matching user and restaurant IDs
+      if (review.USER_ID === userId && review.RESTAURANT_ID === restaurantId) {
+        return true; // Return true if a matching review is found
+      }
+    }
+    return false; // Return false if no matching review is found
+  } catch (error) {
+    console.error('Error fetching review data:', error);
+    return false; // Return false if an error occurs during fetching
+  }
+};
+
+
+export { getRestaurantById, getReviewsByUserId, updateReview, getUserById, doesReviewExist };

@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useUserId } from '../../App';
+import { getReviewsByUserId, getRestaurantById, updateReview, getUserById, doesReviewExist } from '../../utils';
 
 function RestInfoPage() {
-  const userId = useUserId();//sets user ID
-
+  const userId = useUserId();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const ID = searchParams.get('ID');
@@ -14,6 +14,7 @@ function RestInfoPage() {
   const [rating, setRating] = useState(0);
   const [showForm, setShowForm] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [reviewExists, setReviewExists] = useState(false); // New state to track if review exists
 
   useEffect(() => {
     const fetchRestData = async () => {
@@ -22,6 +23,10 @@ function RestInfoPage() {
         const RestData = response.data.DATA;
         const Restaurant = Object.values(RestData).find(Restaurant => Restaurant._id === ID);
         setRestData(Restaurant);
+        
+        // Check if review exists for the current user and restaurant
+        const reviewExists = await doesReviewExist(userId, Restaurant._id);
+        setReviewExists(reviewExists);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -63,7 +68,11 @@ function RestInfoPage() {
           <p>Name: {RestData.name}</p>
           <p>Address: {RestData.address}</p>
           {/* Add additional fields as needed */}
-          <button onClick={() => setShowForm(true)}>Add Review</button>
+          {reviewExists ? (
+            <p>Already Reviewed</p> // Display if review exists
+          ) : (
+            <button onClick={() => setShowForm(true)}>Add Review</button> // Display if review doesn't exist
+          )}
           {showForm && (
             <div>
               <h2>Add Review</h2>
