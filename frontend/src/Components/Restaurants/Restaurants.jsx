@@ -150,96 +150,112 @@ AddRestaurantForm.propTypes = {
   setError: propTypes.func.isRequired,
 };
 
-// function FilterByTypeForm({ setError, setFilteredRestaurants }) {
-//   const [selectedType, setSelectedType] = useState("");
-//   const [restaurants, setRestaurants] = useState([]);
+const filterRestaurantsByType = (
+  restaurantType,
+  setFilteredRestaurants,
+  setError
+) => {
+  // Ensure restaurantType is provided
+  if (!restaurantType) {
+    setError("Please provide a restaurant type for filtering.");
+    return;
+  }
 
-//   const fetchRestaurants = () => {
-//     axios
-//       .get("http://localhost:8000/restaurants")
-//       .then((response) => {
-//         const restaurantsObject = response.data.DATA;
-//         const restaurantsArray = Object.values(restaurantsObject);
-//         setRestaurants(restaurantsArray);
-//       })
-//       .catch((error) => {
-//         console.error(error);
-//         setError(`Something went wrong: ${error.message}`);
-//       });
-//   };
+  // Make a GET request to your Flask backend's search endpoint
+  axios
+    .get(
+      `http://localhost:8000/restaurants/search?restaurant_type=${encodeURIComponent(
+        restaurantType
+      )}`
+    )
+    .then((response) => {
+      const { DATA } = response.data;
+      setFilteredRestaurants(DATA); // Update state with filtered restaurants
+    })
+    .catch((error) => {
+      console.error("Error filtering restaurants:", error);
+      setError("Error filtering restaurants. Please try again.");
+    });
+};
 
-//   useEffect(fetchRestaurants, []);
+function FilterByTypeForm({
+  setError,
+  setFilteredRestaurants,
+  filteredRestaurants,
+}) {
+  const [selectedType, setSelectedType] = useState("");
 
-//   const handleTypeChange = (event) => {
-//     setSelectedType(event.target.value);
-//   };
+  const handleTypeChange = (event) => {
+    setSelectedType(event.target.value);
+  };
 
-//   const handleFilterByType = () => {
-//     if (selectedType && restaurants && restaurants.length > 0) {
-//       const filtered = restaurants.filter(
-//         (restaurant) => restaurant.restaurant_type === selectedType
-//       );
-//       setFilteredRestaurants(filtered);
-//     }
-//   };
+  const handleFilterByType = () => {
+    filterRestaurantsByType(selectedType, setFilteredRestaurants, setError);
+  };
 
-//   return (
-//     <div className="form-container">
-//       <h2>Filter</h2>
-//       <select value={selectedType} onChange={handleTypeChange}>
-//         <option value="">Select a type</option>
-//         {restaurantTypes.map((type, index) => (
-//           <option key={index} value={type}>
-//             {type}
-//           </option>
-//         ))}
-//       </select>
-//       <button onClick={handleFilterByType}>Filter</button>
-//       {/* Display filtered restaurants */}
-//       <div>
-//         <h2>Restaurants:</h2>
-//         {restaurants.length > 0 ? (
-//           <table>
-//             <thead>
-//               <tr>
-//                 <th>Name</th>
-//                 <th>Type</th>
-//                 <th>Description</th>
-//                 <th>Location</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {restaurants.map((restaurant, index) => (
-//                 <tr key={index}>
-//                   <td>{restaurant.name}</td>
-//                   <td>{restaurant.restaurant_type}</td>
-//                   <td>{restaurant.description}</td>
-//                   <td>
-//                     {restaurant.city}, {restaurant.state}
-//                   </td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </table>
-//         ) : (
-//           <p>No restaurants found for the selected type.</p>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
+  return (
+    <div className="form-container">
+      <h2>Filter</h2>
+      {/* Select input for restaurant type */}
+      <select value={selectedType} onChange={handleTypeChange}>
+        <option value="">Select a type</option>
+        {restaurantTypes.map((type, index) => (
+          <option key={index} value={type}>
+            {type}
+          </option>
+        ))}
+      </select>
+      {/* Button to apply filter */}
+      <button onClick={handleFilterByType}>Filter</button>
+      {/* Display filtered restaurants */}
+      <div>
+        <h2>Filtered Restaurants:</h2>
+        {filteredRestaurants.length > 0 ? (
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredRestaurants.map((restaurant, index) => (
+                <tr key={index}>
+                  <td>{restaurant.name}</td>
+                  <td>{restaurant.restaurant_type}</td>
+                  <td>{restaurant.description}</td>
+                  <td>
+                    {restaurant.city}, {restaurant.state}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>No restaurants found for the selected type.</p>
+        )}
+      </div>
+    </div>
+  );
+}
 
-// FilterByTypeForm.propTypes = {
-//   setFilteredRestaurants: propTypes.func.isRequired,
-// };
+FilterByTypeForm.propTypes = {
+  setError: propTypes.func.isRequired,
+  setFilteredRestaurants: propTypes.func.isRequired,
+  filteredRestaurants: propTypes.array.isRequired, // Ensure this is an array
+  filterRestaurants: propTypes.func.isRequired,
+};
 
 function Restaurants() {
   const [error, setError] = useState("");
   const [restaurants, setRestaurants] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
-  const [searchingByState, setSearchingByState] = useState(false); // State to manage search by state
-  const [filteredRestaurants, setFilteredRestaurants] = useState([]); // State to hold filtered restaurants
+  const [searchingByState, setSearchingByState] = useState(false);
+  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+  const [searchingByType, setSearchingByType] = useState(false);
 
   const toggleForm = () => {
     setShowForm(!showForm);
@@ -259,7 +275,9 @@ function Restaurants() {
       });
   };
 
-  useEffect(fetchRestaurants, []);
+  useEffect(() => {
+    fetchRestaurants();
+  }, []);
 
   const handleRowClick = (restaurant) => {
     setSelectedRestaurant(restaurant);
@@ -267,11 +285,21 @@ function Restaurants() {
 
   const handleSearchByState = () => {
     setSearchingByState(true);
-    setFilteredRestaurants([]); // Clear previous filtered results
+    setSearchingByType(false); // Ensure search by type is disabled
+    setFilteredRestaurants([]);
+  };
+
+  const handleSearchByType = () => {
+    setSearchingByType(true);
+    setSearchingByState(false); // Ensure search by state is disabled
+    setFilteredRestaurants([]);
   };
 
   const handleShowAll = () => {
-    setSearchingByState(false);
+    setFilteredRestaurants([]); // Clear filtered results
+    setSearchingByState(false); // Ensure search by state is not active
+    setSearchingByType(false); // Ensure search by type is not active
+    setShowForm(false); // Hide the Add Restaurant form
   };
 
   return (
@@ -283,6 +311,9 @@ function Restaurants() {
       </button>
       <button onClick={searchingByState ? handleShowAll : handleSearchByState}>
         {searchingByState ? "Show all Restaurants" : "Search by State"}
+      </button>
+      <button onClick={searchingByType ? handleShowAll : handleSearchByType}>
+        {searchingByType ? "Show all Restaurants" : "Search by Type"}
       </button>
       {showForm && (
         <AddRestaurantForm
@@ -306,6 +337,59 @@ function Restaurants() {
             </thead>
             <tbody>
               {(searchingByState ? filteredRestaurants : restaurants).map(
+                (restaurant, index) => (
+                  <tr key={index} onClick={() => handleRowClick(restaurant)}>
+                    <td>{restaurant.name}</td>
+                    <td>{restaurant.restaurant_type}</td>
+                    <td>{restaurant.description}</td>
+                    <td>
+                      {restaurant.city}, {restaurant.state}
+                    </td>
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
+          {selectedRestaurant && (
+            <div className="selected-restaurant-details">
+              <h2>{selectedRestaurant.name}</h2>
+              <p>Description: {selectedRestaurant.description}</p>
+              <p>
+                Address: {selectedRestaurant.address}, {selectedRestaurant.city}
+                , {selectedRestaurant.state} {selectedRestaurant.zip_code}
+              </p>
+              <Link
+                to={`/RestInfoPage?ID=${encodeURIComponent(
+                  selectedRestaurant._id
+                )}`}
+              >
+                View Details
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
+
+      {searchingByType ? (
+        <FilterByTypeForm
+          setError={setError}
+          setFilteredRestaurants={setFilteredRestaurants}
+          filteredRestaurants={filteredRestaurants} // Pass filteredRestaurants as prop
+          filterRestaurants={filterRestaurantsByType}
+        />
+      ) : (
+        <div className="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(searchingByType ? filteredRestaurants : restaurants).map(
                 (restaurant, index) => (
                   <tr key={index} onClick={() => handleRowClick(restaurant)}>
                     <td>{restaurant.name}</td>
