@@ -79,5 +79,36 @@ const doesReviewExist = async (userId, restaurantId) => {
   }
 };
 
+async function calculateAverageRating(restaurantId) {
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/reviews');
+    const reviews = response.data.DATA;
 
-export { getRestaurantById, getReviewsByUserId, updateReview, getUserById, doesReviewExist };
+    // Filter reviews by the provided restaurantId
+    const filteredReviews = Object.values(reviews).filter(review => review.RESTAURANT_ID === restaurantId);
+
+    // Calculate average rating
+    const totalRatings = filteredReviews.reduce((acc, review) => acc + review.rating, 0);
+    const averageRating = totalRatings / filteredReviews.length;
+
+    return averageRating;
+  } catch (error) {
+    console.error('Error fetching reviews:', error);
+    throw error;
+  }
+}
+
+async function deleteReview(userId, restaurantId) {
+  const url = `http://127.0.0.1:8000/reviews/delete/${userId}/${restaurantId}`;
+
+  try {
+    const response = await axios.delete(url);
+    return response.data; // Optionally return data from the response
+  } catch (error) {
+    console.error('Error deleting review:', error);
+    throw error;
+  }
+}
+
+
+export { getRestaurantById, getReviewsByUserId, updateReview, getUserById, doesReviewExist, calculateAverageRating, deleteReview };

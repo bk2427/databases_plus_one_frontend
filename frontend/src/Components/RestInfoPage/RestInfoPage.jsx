@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useUserId } from '../../App';
-import { getReviewsByUserId, getRestaurantById, updateReview, getUserById, doesReviewExist } from '../../utils';
+import { getReviewsByUserId, getRestaurantById, updateReview, getUserById, doesReviewExist, calculateAverageRating } from '../../utils';
 
 function RestInfoPage() {
   const userId = useUserId();
@@ -15,6 +15,7 @@ function RestInfoPage() {
   const [showForm, setShowForm] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [reviewExists, setReviewExists] = useState(false); // New state to track if review exists
+  const [averageRating, setAverageRating] = useState(null);
 
   useEffect(() => {
     const fetchRestData = async () => {
@@ -27,6 +28,10 @@ function RestInfoPage() {
         // Check if review exists for the current user and restaurant
         const reviewExists = await doesReviewExist(userId, Restaurant._id);
         setReviewExists(reviewExists);
+
+        //get average rating
+        const rating = await calculateAverageRating(Restaurant._id);
+        setAverageRating(rating);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -64,9 +69,10 @@ function RestInfoPage() {
     <div>
       {RestData ? (
         <div>
-          <h2>Restaurant Info</h2>
-          <p>Name: {RestData.name}</p>
-          <p>Address: {RestData.address}</p>
+          <h2>{RestData.name}</h2>
+          <p>{RestData.restaurant_type}</p>
+          <p>{RestData.address} {RestData.city}, {RestData.state}</p>
+          <p>Average rating: {averageRating}</p>
           {/* Add additional fields as needed */}
           {reviewExists ? (
             <p>Already Reviewed</p> // Display if review exists

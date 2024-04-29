@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useUserId } from '../../App';
 import { Link } from 'react-router-dom';
-import { getReviewsByUserId, getRestaurantById, updateReview, getUserById } from '../../utils'; // Import the functions from utils.js
+import { getReviewsByUserId, getRestaurantById, updateReview, getUserById, deleteReview } from '../../utils'; // Import the functions from utils.js
 import './Home.css'; // Import the CSS file
 
 const Home = () => {
@@ -65,6 +65,16 @@ const Home = () => {
     }
   };
 
+  const handleDeleteReview = async (review) => {
+    try {
+      await deleteReview(review.USER_ID, review.RESTAURANT_ID);
+      // Refetch reviews data after deleting the review
+      const updatedReviews = await getReviewsByUserId(userId);
+      setReviews(updatedReviews);
+    } catch (error) {
+      console.error('Error deleting review:', error);
+    }
+  };
 
   return (
     <div>
@@ -89,6 +99,7 @@ const Home = () => {
               <td>{review.rating}</td>
               <td>
                 <button onClick={() => handleModifyClick(review)}>Modify</button>
+                <button onClick={() => handleDeleteReview(review)}>Delete</button>
                 <button><Link to={`/RestInfoPage?ID=${encodeURIComponent(review.RESTAURANT_ID)}`}>View Restaurant</Link></button>
               </td>
             </tr>
@@ -127,5 +138,6 @@ const Home = () => {
 };
 
 export default Home;
+
 
 
