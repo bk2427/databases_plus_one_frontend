@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useUserId } from '../../App';
 import { Link } from 'react-router-dom';
-import { getReviewsByUserId, getRestaurantById, updateReview } from '../../utils'; // Import the functions from utils.js
+import { getReviewsByUserId, getRestaurantById, updateReview, getUserById } from '../../utils'; // Import the functions from utils.js
 import './Home.css'; // Import the CSS file
 
 const Home = () => {
   const userId = useUserId();
   const [reviews, setReviews] = useState([]);
+  const [userData, setUserData] = useState([]);
   const [restaurantNames, setRestaurantNames] = useState({});
   const [selectedReview, setSelectedReview] = useState(null);
   const [modifiedReview, setModifiedReview] = useState('');
@@ -17,6 +18,9 @@ const Home = () => {
       try {
         const reviews = await getReviewsByUserId(userId);
         setReviews(reviews);
+
+        const userData = await getUserById(userId);
+        setUserData(userData);
 
         const restaurantIds = reviews.map(review => review.RESTAURANT_ID);
         const namesPromises = restaurantIds.map(id => getRestaurantById(id));
@@ -61,8 +65,12 @@ const Home = () => {
     }
   };
 
+
   return (
     <div>
+      <h1>My Profile:</h1>
+      <h2>{userData['first name']} {userData['last name']}</h2>
+      <h3>{userData.email}</h3>
       <h1>My Reviews:</h1>
       <table>
         <thead>
