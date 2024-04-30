@@ -378,7 +378,7 @@ function Restaurants() {
           filterRestaurants={filterRestaurantsByType}
         />
       ) : (
-        <div className="table-container">
+        <div className="table-container" type ="weird">
           <table>
             <thead>
               <tr>
