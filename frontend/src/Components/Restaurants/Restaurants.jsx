@@ -45,15 +45,18 @@ function AddRestaurantForm({ setError, fetchRestaurants, cancel }) {
   const addRestaurant = (event) => {
     event.preventDefault();
     axios
-      .post("http://localhost:8000/restaurants", {
-        name: name,
-        restaurant_type: type,
-        description: description,
-        address: address,
-        city: city,
-        state: state,
-        zip_code: zipCode,
-      })
+      .post(
+        "https://databases-plus-one-b6341ffdbbfd.herokuapp.com/restaurants",
+        {
+          name: name,
+          restaurant_type: type,
+          description: description,
+          address: address,
+          city: city,
+          state: state,
+          zip_code: zipCode,
+        }
+      )
       .then(() => {
         setError("");
         fetchRestaurants();
@@ -164,7 +167,7 @@ const filterRestaurantsByType = (
   // Make a GET request to your Flask backend's search endpoint
   axios
     .get(
-      `http://localhost:8000/restaurants/search?restaurant_type=${encodeURIComponent(
+      `https://databases-plus-one-b6341ffdbbfd.herokuapp.com/restaurants/search?restaurant_type=${encodeURIComponent(
         restaurantType
       )}`
     )
@@ -263,7 +266,7 @@ function Restaurants() {
 
   const fetchRestaurants = () => {
     axios
-      .get("http://localhost:8000/restaurants")
+      .get("https://databases-plus-one-b6341ffdbbfd.herokuapp.com/restaurants")
       .then((response) => {
         const restaurantsObject = response.data.DATA;
         const restaurantsArray = Object.values(restaurantsObject);
@@ -378,7 +381,7 @@ function Restaurants() {
           filterRestaurants={filterRestaurantsByType}
         />
       ) : (
-        <div className="table-container" type ="weird">
+        <div className="table-container" type="weird">
           <table>
             <thead>
               <tr>
@@ -481,7 +484,9 @@ function FormWrapper() {
 
   // Fetch the form data from the backend
   useEffect(() => {
-    fetch("http://localhost:8000/restaurants/state")
+    fetch(
+      "https://databases-plus-one-b6341ffdbbfd.herokuapp.com/restaurants/state"
+    )
       .then((response) => response.json())
       .then((data) => {
         setFields(data);
@@ -496,7 +501,7 @@ function FormWrapper() {
     setHasSubmitted(true); // Set the form submission state to true
     // Send a GET request to /restaurants with the state as a query parameter
     fetch(
-      `http://localhost:8000/restaurants?state=${encodeURIComponent(
+      `https://databases-plus-one-b6341ffdbbfd.herokuapp.com/restaurants?state=${encodeURIComponent(
         answers.state
       )}`
     )

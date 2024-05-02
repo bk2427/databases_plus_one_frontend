@@ -57,7 +57,9 @@ export default function FormWrapper() {
 
   // Fetch the form data from the backend
   useEffect(() => {
-    fetch("http://localhost:8000/restaurants/state")
+    fetch(
+      "https://databases-plus-one-b6341ffdbbfd.herokuapp.com/restaurants/state"
+    )
       .then((response) => response.json())
       .then((data) => {
         setFields(data);
@@ -72,7 +74,7 @@ export default function FormWrapper() {
     setHasSubmitted(true); // Set the form submission state to true
     // Send a GET request to /restaurants with the state as a query parameter
     fetch(
-      `http://localhost:8000/restaurants?state=${encodeURIComponent(
+      `https://databases-plus-one-b6341ffdbbfd.herokuapp.com/restaurants?state=${encodeURIComponent(
         answers.state
       )}`
     )

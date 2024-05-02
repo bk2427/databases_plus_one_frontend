@@ -11,7 +11,9 @@ function Login({ onLogin }) {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/users");
+      const response = await fetch(
+        "https://databases-plus-one-b6341ffdbbfd.herokuapp.com/users"
+      );
       const userData = await response.json();
 
       if (userData.DATA[email]) {
