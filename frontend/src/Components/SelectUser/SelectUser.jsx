@@ -35,7 +35,6 @@ function SelectUser() {
             User: {userData["first name"]} {userData["last name"]}{" "}
           </h2>
           <p>Email: {userData.email}</p>
-          {/* Add additional fields as needed */}
         </div>
       ) : (
         <p>Loading...</p>

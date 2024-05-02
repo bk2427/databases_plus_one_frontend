@@ -12,7 +12,7 @@ import CreateAccount from "./Components/CreateAccount";
 import RestInfoPage from "./Components/RestInfoPage/RestInfoPage";
 import SelectUser from "./Components/SelectUser/SelectUser";
 
-// Step 1: Create a context
+
 const UserIdContext = createContext();
 
 function App() {
@@ -25,7 +25,6 @@ function App() {
   };
 
   return (
-    // Step 2: Provide the context value
     <UserIdContext.Provider value={userId}>
       <BrowserRouter>
         {isLoggedIn && <Navbar />}
@@ -57,7 +56,7 @@ function App() {
   );
 }
 
-// Step 3: Create a custom hook to consume the context
+
 export function useUserId() {
   return useContext(UserIdContext);
 }

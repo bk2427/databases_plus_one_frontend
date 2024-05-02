@@ -19,7 +19,7 @@ function UpdateUserForm({ user, onUpdate }) {
       console.log('Submitting form with new email:', newEmail); // Debugging
       axios.put(`/users/${user._id}/${newEmail}`)
         .then(response => {
-          onUpdate(response.data); // Optionally, update user state in parent component
+          onUpdate(response.data); 
           // Close the modal or handle success as needed
         })
         .catch(error => {

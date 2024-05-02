@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useUserId } from '../../App';
 import { Link } from 'react-router-dom';
 import { getReviewsByUserId, getRestaurantById, updateReview, getUserById, deleteReview } from '../../utils'; // Import the functions from utils.js
-import './Home.css'; // Import the CSS file
+import './Home.css'; 
 
 const Home = () => {
   const userId = useUserId();

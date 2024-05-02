@@ -20,7 +20,7 @@ function RestInfoPage() {
   useEffect(() => {
     const fetchRestData = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/restaurants');
+        const response = await axios.get('https://databases-plus-one-b6341ffdbbfd.herokuapp.com/restaurants');
         const RestData = response.data.DATA;
         const Restaurant = Object.values(RestData).find(Restaurant => Restaurant._id === ID);
         setRestData(Restaurant);
@@ -45,7 +45,7 @@ function RestInfoPage() {
   const handleSubmitReview = async (event) => {
     event.preventDefault();
     try {
-      await axios.post('http://127.0.0.1:8000/reviews', {
+      await axios.post('https://databases-plus-one-b6341ffdbbfd.herokuapp.com/reviews', {
         USER_ID: userId,
         RESTAURANT_ID: ID,
         Review: review,
